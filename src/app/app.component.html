@@ -1,3 +1,184 @@
-<h1>
-  {{title}}
-</h1>
+<nav class="nav stk">
+	<div class="nav-left">
+		<h2 class="title is-4 brand">AIMS-QUANT</h2>
+	</div>
+
+	<div class="nav-center">
+		<div class="field">
+			<p class="control ticker">
+				<input type="text" [(ngModel)]="asyncSelected"
+					[typeahead]="dataSource"
+					(typeaheadLoading)="changeTypeaheadLoading($event)"
+					(typeaheadNoResults)="changeTypeaheadNoResults($event)"
+					(typeaheadOnSelect)="typeaheadOnSelect($event)"
+					typeaheadOptionsLimit="7" typeaheadOptionField="symbol"
+					placeholder="Enter a stock symbol" class="input ticker">
+			</p>
+		</div>
+	</div>
+	<div class="nav-right nav-menu">
+
+		<div class="nav-item">
+			<div class="field is-grouped">
+
+				<p class="control">
+					<a class="button is-primary"> <span>Hi Shiv!</span>
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<div class="columns">
+	<div class="column is-2 no-pad">
+		<nav class="panel stk-side-panel">
+			<a class="panel-block is-active"> <span class="panel-icon">
+					<i class="fa fa-book"></i>
+			</span> Company
+			</a> <a class="panel-block"> <span class="panel-icon"> <i
+					class="fa fa-book"></i>
+			</span> Markets
+			</a> <a class="panel-block"> <span class="panel-icon"> <i
+					class="fa fa-book"></i>
+			</span> Portfolios
+			</a> <a class="panel-block"> <span class="panel-icon"> <i
+					class="fa fa-book"></i>
+			</span> Stock Screener
+			</a> <a class="panel-block"> <span class="panel-icon"> <i
+					class="fa fa-code-fork"></i>
+			</span> Google Trends
+			</a>
+		</nav>
+	</div>
+	<div class="column is-10 no-pad">
+		<div class="stk-container">
+
+			<h2 *ngIf="selectedSeries" class="title is-3 stk">{{selectedSeries.name}}</h2>
+			<div class="columns">
+				<div class="column is-9">
+					<div class="columns">
+						<div class="column is-12">
+							<div class="columns">
+								<div class="tile is-ancestor">
+									<div class="tile is-4">
+										<div class="tile is-parent stk">
+											<article class="tile is-child stk notification">
+												<p class="title price">
+													<i class="fa fa-arrow-up" aria-hidden="true"></i> <span>321.80</span>
+												</p>
+												<p class="subtitle change">1.65(+0.52%)</p>
+												<div class="content">
+													<!-- Content -->
+												</div>
+											</article>
+										</div>
+									</div>
+									<div class="tile is-8">
+										<div class="tile is-parent stk">
+											<article class="tile is-child stk notification">
+												<div class="content">
+													<table class="table">
+														<tbody>
+															<tr>
+																<th>Range</th>
+																<td>2,552.50-2,591.85</td>
+																<th>Div/Yield</th>
+																<td>27.50/1.84</td>
+															</tr>
+
+															<tr>
+																<th>2 Week</th>
+																<td>2,051.90</td>
+																<th>EPS</th>
+																<td>2,744.80</td>
+															</tr>
+
+															<tr>
+																<th>Open</th>
+																<td>2,586.35</td>
+																<th>Shares</th>
+																<td>1,978</td>
+															</tr>
+
+															<tr>
+																<th>Vol</th>
+																<td>677,836,000</td>
+																<th>Beta</th>
+																<td>-</td>
+															</tr>
+
+														</tbody>
+													</table>
+												</div>
+											</article>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+					<div class="columns">
+						<div class="column is-12">
+							<div class="tile stk chart">
+								<chart *ngIf="selectedSeries && selectedSeries.data.length>0"
+									type="StockChart" [options]="options"></chart>
+								<div *ngIf="!selectedSeries || selectedSeries.data.length==0"
+									class="notification is-danger no-data">
+									<p class="title">Historical data is not available!</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="column is-3">
+
+					<div class="tile recents is-ancesttor no-mr">
+						<div class="tile is-parent no-pad">
+							<article class="tile is-child notification stk">
+
+								<p class="title">Recently Viewed</p>
+								<ul>
+									<li *ngFor="let ticker of recentlyViewed" class="recent-stks">
+
+										<div class="columns">
+											<div class="column is-1">
+												<label class="checkbox" style="display: inline-block">
+													<input type="checkbox" (click)="addSymbol(ticker)">
+
+												</label>
+											</div>
+											<div class="column is-11">
+												<table class="recent-stks-tbl">
+													<tr>
+
+														<td><h5 class="title is-5">{{ticker}}</h5></td>
+														<td>2,509</td>
+													</tr>
+													<tr>
+
+														<td>finance</td>
+														<td>1.05%</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+
+									</li>
+								</ul>
+
+							</article>
+						</div>
+					</div>
+					<div class="content"></div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
