@@ -148,11 +148,12 @@
 										<div class="columns">
 											<div class="column is-1">
 												<label class="checkbox" style="display: inline-block">
-													<input type="checkbox" (click)="addSymbol(ticker)">
-
+													<input type="checkbox"
+													(click)="addSymbol(ticker,$event.target.checked)"
+													[checked]="ticker===selectedSeries.name">
 												</label>
 											</div>
-											<div class="column is-11">
+											<div class="column is-10">
 												<table class="recent-stks-tbl">
 													<tr>
 
@@ -165,6 +166,11 @@
 														<td>1.05%</td>
 													</tr>
 												</table>
+											</div>
+											<div class="column is-10">
+												<a (click)="removeFromRecents(ticker,$event)"
+													[hidden]="ticker===selectedSeries.name"><i
+													class="fa fa-trash-o" aria-hidden="true"></i></a>
 											</div>
 										</div>
 

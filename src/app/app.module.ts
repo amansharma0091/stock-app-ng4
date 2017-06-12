@@ -4,12 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 import { AppComponent } from './app.component';
 
-declare var require: any;
-
+export declare let require: any;
+export function highchartsFactory() {
+  const hc = require('highcharts/highstock.src')
+  const dd = require('highcharts/modules/exporting');
+  dd(hc);
+  return hc;
+}
 @NgModule({
   declarations: [
     AppComponent
@@ -18,10 +24,15 @@ declare var require: any;
     BrowserModule,
     FormsModule,
     HttpModule,
-    ChartModule.forRoot(require('../../node_modules/highcharts/highstock.src')),
+    ChartModule,
     TypeaheadModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HighchartsStatic,
+      useFactory: highchartsFactory
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

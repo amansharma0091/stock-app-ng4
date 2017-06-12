@@ -20,7 +20,7 @@ interface ChartOptions {
 export class AppComponent {
   options: ChartOptions;
   seriesOptions: any[] = [];
-  selectedSeries : any;
+  selectedSeries: any;
   dataSource: Observable<any>;
 
   public asyncSelected: string = 'JKCEMENT';
@@ -77,8 +77,8 @@ export class AppComponent {
 
       const data = this.getData(res);
 
-      if (data.length==0) console.log("no data");
-      
+      if (data.length == 0) console.log("no data");
+
       this.seriesOptions = [{
         name: symb,
         data: data,
@@ -86,14 +86,14 @@ export class AppComponent {
           valueDecimals: 2
         }
       }];
-      
+
       this.selectedSeries = this.seriesOptions[0];
 
       this.options = this.getNewOptions();
 
     });
   }
-  getData(res : any): any {
+  getData(res: any): any {
     return res.json().dataset.data.map(d => {
       return [new Date(d[0]).getTime(), d[4]];
     }).sort(function(a, b) {
@@ -103,29 +103,42 @@ export class AppComponent {
     });
   }
 
-  addSymbol(symb: string, event: any) {
-    console.log("event : " + JSON.stringify(event));
+  addSymbol(symb: string, checked: any) {
+    console.log("event : " + JSON.stringify(checked));
 
-    const quandlURL: any = `https://www.quandl.com/api/v3/datasets/XNSE/${symb}.json?api_key=gWf2CLShwrGUBVnqzsT4&start_date=2016-01-01&end_date=2017-06-01`;
-    this.http.get(quandlURL).subscribe(res => {
+    if (checked == true) {
+      const quandlURL: any = `https://www.quandl.com/api/v3/datasets/XNSE/${symb}.json?api_key=gWf2CLShwrGUBVnqzsT4&start_date=2016-01-01&end_date=2017-06-01`;
+      this.http.get(quandlURL).subscribe(res => {
 
-      const data = this.getData(res);
+        const data = this.getData(res);
 
-      if (this.seriesOptions.filter(e => e.name === symb).length === 0) {
-        this.seriesOptions.push({
-          name: symb,
-          data: data,
-          tooltip: {
-            valueDecimals: 2
-          }
-        });
-      } else {
-        this.seriesOptions = this.seriesOptions.filter(e => e.name != symb);
-      }
+        if (this.seriesOptions.filter(e => e.name === symb).length === 0) {
+          this.seriesOptions.push({
+            name: symb,
+            data: data,
+            tooltip: {
+              valueDecimals: 2
+            }
+          });
+        } else {
+          this.seriesOptions = this.seriesOptions.filter(e => e.name != symb);
+        }
 
 
+        this.options = this.getNewOptions();
+      });
+    } else {
+      this.seriesOptions = this.seriesOptions.filter(e => e.name != symb);
+    }
+
+  }
+
+  removeFromRecents(ticker: string, event: any) {
+    if (this.recentlyViewed.length > 1) {
+    this.recentlyViewed = this.recentlyViewed.filter(e => e != ticker);
+      this.seriesOptions = this.seriesOptions.filter(e => e.name != ticker);
       this.options = this.getNewOptions();
-    });
+    }
   }
   getNewOptions(): ChartOptions {
     return {
