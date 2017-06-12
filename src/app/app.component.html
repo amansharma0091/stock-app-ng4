@@ -55,6 +55,7 @@
 		<div class="stk-container">
 
 			<h2 *ngIf="selectedSeries" class="title is-3 stk">{{selectedSeries.name}}</h2>
+			<h2 *ngIf="!selectedSeries" class="title is-3 stk"></h2>
 			<div class="columns">
 				<div class="column is-9">
 					<div class="columns">
@@ -128,7 +129,8 @@
 									type="StockChart" [options]="options"></chart>
 								<div *ngIf="!selectedSeries || selectedSeries.data.length==0"
 									class="notification is-danger no-data">
-									<p class="title">Historical data is not available!</p>
+									<p class="title" *ngIf="!selectedSeries">Loading Ticker Chart...</p>
+									<p class="title" *ngIf="selectedSeries.data.length==0">Historical data is not available!</p>
 								</div>
 							</div>
 						</div>
